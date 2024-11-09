@@ -1,15 +1,15 @@
-.file-upload {
+.file-upload-loading {
   position: relative;
   display: flex;
-  flex-direction: column;
+  gap: 60px;
   align-items: center;
   justify-content: center;
-  width: 650px;
-  height: 350px;
+  width: 750px;
+  height: 150px;
   background-color: #1e1e2f;
   border: 2px dashed #3a3a5a;
   border-radius: 20px;
-  padding: 20px;
+  padding: 60px;
   text-align: center;
 }
 
@@ -20,10 +20,15 @@
   transform: scale(1.05);
 }
 
-.upload-icon {
-  font-size: 36px;
+.upload-icon-ul {
+  width: 55px;
+  height: 55px;
   color: #5062f0;
-  margin-bottom: 10px;
+}
+
+.progress-bar-ul-wrap {
+  display: flex;
+  align-items: center;
 }
 
 h3 {
@@ -86,9 +91,9 @@ p {
   pointer-events: none;
 }
 
-.file-preview {
+.file-preview-loading {
   position: absolute;
-  right: 10px;
+  right: -100px;
   bottom: 10px;
   display: flex;
   flex-direction: column;
@@ -106,7 +111,7 @@ p {
   overflow: hidden;
   text-overflow: ellipsis;
   display: flex;
-  justify-content: center
+  justify-content: center;
 }
 
 .remove-file-button {
@@ -121,4 +126,63 @@ p {
 
 .remove-file-button:hover {
   opacity: 0.6;
+}
+
+.file-preview-loading-ul {
+  margin-top: 40px;
+  height: 350px;
+}
+
+.file-item-ul {
+  display: flex;
+  align-items: center;
+  flex-direction: colomn;
+  gap: 20px;
+  /* justify-content: space-between; */
+  margin-bottom: 10px;
+  padding: 30px;
+  border: 1px dashed #526aff;
+  border-radius: 20px;
+  color: white;
+  width: 750px;
+  height: 90px;
+  background-color: #1e1e2f;
+}
+
+.progress-bar-ul {
+  flex: 1;
+  /* margin: 0 10px; */
+  height: 8px;
+  background-color: #acb8ff;
+  border-radius: 4px;
+}
+
+.progress-ul {
+  height: 100%;
+  background-color: #3b82f6;
+  border-radius: 4px;
+}
+
+.file-name-ul {
+  flex: 2;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.remove-file-button-ul {
+  background: none;
+  border: none;
+  color: #ff4d4d;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.wrapper {
+  width: 100%;
+}
+
+.progress-bar-ul-wrap {
+  display: flex;
+  gap: 10px;
 }

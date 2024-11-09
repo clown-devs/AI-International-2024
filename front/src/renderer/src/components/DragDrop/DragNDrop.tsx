@@ -2,16 +2,23 @@ import React, { useState } from 'react'
 import './DragNDrop.css'
 import logo from '../../assets/upload.svg'
 
-const DragNDrop: React.FC = () => {
+interface DragNDropProps {
+  onFilesSelected: (files: File[]) => void // Принимаем массив файлов
+}
+
+const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
   const [fileNames, setFileNames] = useState<string[]>([])
   const [isDragging, setIsDragging] = useState<boolean>(false)
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const files = event.target.files
     if (files) {
-      const fileArray = Array.from(files).map((file) => file.name)
-      setFileNames(fileArray)
-      console.log('Выбраны файлы:', fileArray)
+      const fileArrayName = Array.from(files).map((file) => file.name)
+      const fileArray = Array.from(files)
+
+      setFileNames(fileArrayName)
+      console.log('Выбраны файлы:', fileArrayName)
+      onFilesSelected(fileArray)
     }
   }
 
@@ -29,10 +36,18 @@ const DragNDrop: React.FC = () => {
     setIsDragging(false)
     const files = event.dataTransfer.files
     if (files) {
-      const fileArray = Array.from(files).map((file) => file.name)
-      setFileNames(fileArray)
-      console.log('Перетащены файлы:', fileArray)
+      const fileArrayName = Array.from(files).map((file) => file.name)
+      const fileArray = Array.from(files)
+      setFileNames(fileArrayName)
+      console.log('Перетащены файлы:', fileArrayName)
+      onFilesSelected(fileArray)
     }
+  }
+
+  const removeFile = (index: number): void => {
+    const newFileNames = [...fileNames]
+    newFileNames.splice(index, 1)
+    setFileNames(newFileNames)
   }
 
   const fileCountText = fileNames.length === 1 ? 'файл' : 'файлы'
@@ -51,14 +66,17 @@ const DragNDrop: React.FC = () => {
         <input type="file" multiple onChange={handleFileSelect} />
         Выберите {fileCountText}
       </label>
+
       {fileNames.length > 0 && (
-        <div className="file-names">
-          <p>Выбранные {fileCountText}:</p>
-          <ul>
-            {fileNames.map((name, index) => (
-              <li key={index}>{name}</li>
-            ))}
-          </ul>
+        <div className="file-preview">
+          {fileNames.map((name, index) => (
+            <div key={index} className="file-item">
+              {name}
+              <button className="remove-file-button" onClick={() => removeFile(index)}>
+                &times;
+              </button>
+            </div>
+          ))}
         </div>
       )}
     </div>
