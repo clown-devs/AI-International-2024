@@ -63,11 +63,11 @@ async def create_upload_file(file: UploadFile):
     # with open("server/"+json_filename, "w") as f:
     #     f.write(json.dumps(data))
 
-    import gzip
 
     graph_json = create_plot(data)
-    with gzip.open("server/" + json_filename + ".gz", "wb") as f:
-        f.write(graph_json.encode())
+      # Сжимаем график в gzip
+    with open("server/" + json_filename, "w") as f:
+        f.write(graph_json)
     
     resp = {
         "file": marked_edf_filename,
@@ -88,24 +88,59 @@ def create_plot(data):
     OcR = data["OcR"]
     classes = data["classes"]
 
+    # Уменьшим размер данных для ускорения отрисовки
+    FrL = FrL[:100000]
+    FrR = FrR[:100000]
+    OcR = OcR[:100000]
+    classes = classes[:100000]
+
+    # Частота дискретизации
+    sampling_frequency = 400  # Гц
+
+    # Время на оси X (по индексу данных)
+    time = [i / sampling_frequency for i in range(len(FrL))]
+
     # Создаем фигуру
     fig = go.Figure()
 
-    # Для каждого класса (0, 1, 2, 3) добавляем scatter trace
-    colors = {0: "blue", 1: "green", 2: "red", 3: "orange"}
+    # Для каждого класса (0, 1, 2, 3) добавляем scatter trace для каждого канала
+    colors = {0: "gray", 1: "green", 2: "red", 3: "orange"}
     for class_label in [0, 1, 2, 3]:
+        # Для каждого канала
         class_indices = [i for i, c in enumerate(classes) if c == class_label]
-        fig.add_trace(go.Scatter(x=[FrL[i] for i in class_indices],
-                                 y=[FrR[i] for i in class_indices],
-                                 mode='markers',
-                                 name=f'Class {class_label}',
-                                 marker=dict(color=colors[class_label])))
+        
+        # FrL график
+        fig.add_trace(go.Scatter(
+            x=[time[i] for i in class_indices], 
+            y=[FrL[i] for i in class_indices], 
+            mode='markers', 
+            name=f'FrL - Class {class_label}', 
+            marker=dict(color=colors[class_label])
+        ))
+
+        # FrR график
+        fig.add_trace(go.Scatter(
+            x=[time[i] for i in class_indices], 
+            y=[FrR[i] for i in class_indices], 
+            mode='markers', 
+            name=f'FrR - Class {class_label}', 
+            marker=dict(color=colors[class_label])
+        ))
+
+        # OcR график
+        fig.add_trace(go.Scatter(
+            x=[time[i] for i in class_indices], 
+            y=[OcR[i] for i in class_indices], 
+            mode='markers', 
+            name=f'OcR - Class {class_label}', 
+            marker=dict(color=colors[class_label])
+        ))
 
     # Настроим макет графика
     fig.update_layout(
         title="Signal Channels with Class Colors",
-        xaxis_title="FrL",
-        yaxis_title="FrR",
+        xaxis_title="Time (s)",
+        yaxis_title="Signal Amplitude",
         legend_title="Classes",
         showlegend=True,
     )
