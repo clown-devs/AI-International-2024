@@ -5,61 +5,52 @@ services:
     restart: "no"
     container_name: backend
     hostname: backend
-    stdin_open: true  
-    tty: true       
-    runtime: nvidia
     build:
-      dockerfile: backend/Dockerfile
-    command: sh -c "python -m backend.main"
-    volumes:
-      - /home/user1/ai_model/:/AI-QA-Helper/ai/ai_model/
-      - ./:/AI-QA-Helper
+      dockerfile: server/Dockerfile
+    command: sh -c "python -m server.main"
     ports:
       - '85:8005'
-    environment:
-      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
-      - NVIDIA_VISIBLE_DEVICES=all
 
 
- bot_ai:
-    restart: "no"
-    container_name: bot_ai
-    build:
-      context: ./bot
-      dockerfile: Dockerfile
-    command: sh -c "python telegram_bot.py"
-    volumes:
-      - ./bot:/TG_bot
-    # depends_on:
-    #   - backend 
+#  bot_ai:
+#     restart: "no"
+#     container_name: bot_ai
+#     build:
+#       context: ./bot
+#       dockerfile: Dockerfile
+#     command: sh -c "python telegram_bot.py"
+#     volumes:
+#       - ./bot:/TG_bot
+#     # depends_on:
+#     #   - backend 
 
- frontend:
-    restart: "no"
-    container_name: frontend_ai
-    hostname: frontend
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "80:80" 
-      - "443:443"
-    environment:
-      - NODE_ENV=production 
-    # depends_on:
-    #   - backend 
-    volumes:
-      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+#  frontend:
+#     restart: "no"
+#     container_name: frontend_ai
+#     hostname: frontend
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#     ports:
+#       - "80:80" 
+#       - "443:443"
+#     environment:
+#       - NODE_ENV=production 
+#     # depends_on:
+#     #   - backend 
+#     volumes:
+#       - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
 
- db:
-    restart: "no"
-    container_name: db
-    hostname: db
-    build:
-      context: ./db
-      dockerfile: Dockerfile
-    volumes:
-      - /srv/db/data:/DB/data
-      - ./:/DB/
-    ports:
-      - "86:8000"
-    command: sh -c "chroma run --path /DB/data --host 0.0.0.0"
+#  db:
+#     restart: "no"
+#     container_name: db
+#     hostname: db
+#     build:
+#       context: ./db
+#       dockerfile: Dockerfile
+#     volumes:
+#       - /srv/db/data:/DB/data
+#       - ./:/DB/
+#     ports:
+#       - "86:8000"
+#     command: sh -c "chroma run --path /DB/data --host 0.0.0.0"
