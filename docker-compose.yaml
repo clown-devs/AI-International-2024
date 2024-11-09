@@ -7,7 +7,7 @@ services:
     hostname: backend
     build:
       dockerfile: server/Dockerfile
-    command: sh -c "python -m server.main"
+    command: sh -c "uvicorn server.main:app --reload --host 0.0.0.0 --port 85"
     ports:
       - '85:8005'
 
