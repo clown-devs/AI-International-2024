@@ -10,11 +10,15 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'), // используем __dirname как в CommonJS
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      enableRemoteModule: false,
     },
   });
 
-  mainWindow.loadURL('http://localhost:5173'); // Подключение к серверу Vite
+  const filePath = path.join(__dirname, 'index.html');
+  console.log('Loading file:', filePath);
+  mainWindow.loadFile(filePath);
 }
 
 app.whenReady().then(createWindow);
