@@ -11,4 +11,4 @@ COPY ./requirements.txt /AI-International-2024/
 RUN pip install -r requirements.txt
 COPY . .
 
-EXPOSE 85
+EXPOSE 80
