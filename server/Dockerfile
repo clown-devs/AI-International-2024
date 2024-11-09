@@ -10,3 +10,5 @@ COPY ./requirements.txt /AI-International-2024/
 # COPY ./ai/.env /AI-International-2024/ai/
 RUN pip install -r requirements.txt
 COPY . .
+
+EXPOSE 85
