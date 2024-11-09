@@ -1,0 +1,88 @@
+/* Основные стили */
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 650px;
+  height: 350px;
+  background-color: #1e1e2f;
+  border: 2px dashed #3a3a5a;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.file-upload.dragging {
+  background-color: #33334d;
+  border-color: #5062f0;
+  box-shadow: 0 0 15px rgba(80, 98, 240, 0.5);
+  transform: scale(1.05);
+}
+
+.upload-icon {
+  font-size: 36px;
+  color: #5062f0;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 18px;
+  color: #ffffff;
+  margin: 0;
+}
+
+p {
+  font-size: 14px;
+  color: #7a7a9c;
+  margin: 5px 0;
+}
+
+.textFile {
+  color: #acb8ff;
+  margin-bottom: 10px;
+}
+
+.file-select-button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid #5062f0;
+  border-radius: 20px;
+  color: #5062f0;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+  margin-top: 10px;
+}
+
+.file-select-button:hover {
+  background-color: #5062f0;
+  color: #ffffff;
+}
+
+.file-select-button input {
+  display: none;
+}
+
+.file-name {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+
+.file-names ul {
+  padding: 0;
+  list-style: none;
+}
+
+.file-names li {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.file-upload.dragging * {
+  pointer-events: none;
+}
