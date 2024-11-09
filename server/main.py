@@ -27,20 +27,35 @@ async def create_upload_file(file: UploadFile):
     # }
     
     # постарался сжать данные
-    import numpy as np
+    # import numpy as np
+    # data = {
+    #     "FrL": np.round(data[:, 0], 6).tolist(),
+    #     "FrR": np.round(data[:, 1], 6).tolist(),
+    #     "OcR": np.round(data[:, 2], 6).tolist(),
+    #     "classes": data[:, 3].tolist()
+    # }
+
     data = {
-        "FrL": np.round(data[:, 0], 6).tolist(),
-        "FrR": np.round(data[:, 1], 6).tolist(),
-        "OcR": np.round(data[:, 2], 6).tolist(),
-        "classes": data[:, 3].tolist()
+         "FrL": data[:, 0].tolist(),
+         "FrR": data[:, 1].tolist(),
+         "OcR": data[:, 2].tolist(),
+         "classes": list(map(int, data[:, 3]))
     }
-    
+
+    import msgpack
+    packed = msgpack.packb(data)
+    pack_filename = f"static/{hash}.msgpack"
+    import gzip
+    with gzip.open("server/" + pack_filename + ".gz", "wb") as f:
+        f.write(packed)
+
     import json
     with open("server/"+json_filename, "w") as f:
         f.write(json.dumps(data))
     resp = {
         "file": marked_edf_filename,
-        "json": json_filename
+        "json": json_filename,
+        "msgpack": pack_filename + ".gz"
     }
 
     return resp
