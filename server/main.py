@@ -16,14 +16,21 @@ async def create_upload_file(file: UploadFile):
         f.write(edfInput.read())
 
     marked_edf_filename, data = get_marked_edf(tmp_filename)
+
+    # т.к json очень большой то лучше отдавать его в виде ссылки на файл
+    json_filename = f"static/{hash}.json"
+    data = {
+        "FrL": data[:, 0].tolist(),
+        "FrR": data[:, 1].tolist(),
+        "OcR": data[:, 2].tolist(),
+        "classes": data[:, 3].tolist()
+    }
+    import json
+    with open("server/"+json_filename, "w") as f:
+        f.write(json.dumps(data))
     resp = {
         "file": marked_edf_filename,
-        "data": {
-            "FrL": data[:, 0].tolist(),
-            "FrR": data[:, 1].tolist(),
-            "OcR": data[:, 2].tolist(),
-            "classes": data[:, 3].tolist()
-        }
+        "json": json_filename
     }
 
     return resp
