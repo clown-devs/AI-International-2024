@@ -49,7 +49,7 @@ function App(): JSX.Element {
       formData.append('file', fileWithProgress.file)
 
       try {
-        await axios.post('http://vpn.v0d14ka.ru:8005/upload', formData, {
+        const response = await axios.post('http://vpn.v0d14ka.ru:8005/upload', formData, {
           onUploadProgress: (progressEvent) => {
             const total = progressEvent.total ?? 1
             const progress = Math.round((progressEvent.loaded * 100) / total)
@@ -58,12 +58,24 @@ function App(): JSX.Element {
             )
           }
         })
+        const { word, frl, frr, ocr } = response.data // Извлекаем данные из ответа сервера
+
+        // Обновляем файл с новыми данными
+        setFiles((prevFiles) =>
+          prevFiles.map((f) =>
+            f.name === fileWithProgress.name
+              ? { ...f, word, frl, frr, ocr, progress: 100 } // обновляем прогресс до 100% и добавляем полученные данные
+              : f
+          )
+        )
       } catch (error) {
         console.error(`Ошибка загрузки файла ${fileWithProgress.name}:`, error)
         setError(`Не удалось загрузить файл ${fileWithProgress.name}`)
       }
     })
     await Promise.all(uploadPromises)
+    console.log(files)
+
     setShowData(true)
   }
 

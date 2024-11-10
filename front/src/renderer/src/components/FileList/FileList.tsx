@@ -5,6 +5,7 @@ import logoDownload from '../../assets/download.svg'
 import logoCopy from '../../assets/copy.svg'
 import logoDownloadWhite from '../../assets/downloadWhite.svg'
 import logoCopyWhite from '../../assets/copyWhite.svg'
+import PlotlyWidget from '../PlotlyWidget/PlotlyWidget'
 
 interface FileWithProgress {
   file: File
@@ -25,8 +26,12 @@ const FileList: React.FC<FileListProps> = ({ files }) => {
   const [selectedFile, setSelectedFile] = useState<FileWithProgress | null>(null)
 
   const showMoreInfo = (file: FileWithProgress): void => {
+    console.log(file)
+
     setSelectedFile(file)
-    console.log(file.word)
+    console.log(selectedFile)
+
+    console.log(`http://vpn.v0d14ka.ru:8005/${selectedFile?.file}`)
 
     setShowMore(false)
   }
@@ -44,7 +49,12 @@ const FileList: React.FC<FileListProps> = ({ files }) => {
             {files.map((file, index) => (
               <li key={index} className="file-item-li">
                 <div className="leftPart">
-                  <img className="imgFile" src={logo} alt="file" />
+                  {/* <img className="imgFile" src={logo} alt="file" /> */}
+                  <PlotlyWidget
+                    url1={`http://vpn.v0d14ka.ru:8005/${file.frl}`}
+                    url2={`http://vpn.v0d14ka.ru:8005/${file.frr}`}
+                    url3={`http://vpn.v0d14ka.ru:8005/${file.ocr}`}
+                  />
                   <button className="buttonOpen" onClick={() => showMoreInfo(file)}>
                     Открыть
                   </button>
@@ -57,7 +67,12 @@ const FileList: React.FC<FileListProps> = ({ files }) => {
                       <div className="buttonsFiles">
                         <div className="icons">
                           <img className="imgIcon" src={logoDownload} alt="" />
-                          <button className="buttonDown">Скачать файл</button>
+                          <a
+                            href={`http://vpn.v0d14ka.ru:8005/${file?.frl.slice(0, -8) + 'marked.edf'}`}
+                            download={`Отчёт_по_${selectedFile?.name.slice(0, -4)}.edf`}
+                          >
+                            <button className="buttonDownMore">Скачать файл</button>
+                          </a>
                         </div>
                         <div className="icons">
                           <img className="imgIcon" src={logoCopy} alt="" />
@@ -70,7 +85,12 @@ const FileList: React.FC<FileListProps> = ({ files }) => {
                       <div className="buttonsFiles">
                         <div className="icons">
                           <img className="imgIcon" src={logoDownload} alt="" />
-                          <button className="buttonDown">Скачать файл</button>
+                          <a
+                            href={`http://vpn.v0d14ka.ru:8005/${file?.word}`}
+                            download={`Отчёт_по_${selectedFile?.name.slice(0, -4)}.docx`}
+                          >
+                            <button className="buttonDown">Скачать файл</button>
+                          </a>
                         </div>
                         <div className="icons">
                           <img className="imgIcon" src={logoCopy} alt="" />
@@ -91,8 +111,16 @@ const FileList: React.FC<FileListProps> = ({ files }) => {
             <div className="topPart">
               <h4>Отчет</h4>
               <div className="icons">
-                <img className="imgIcon" src={logoDownload} alt="" />
-                <a href={selectedFile?.word} download={`Отчёт_по_${selectedFile?.name}.docx`}>
+                {/* <img className="imgIcon" src={logoDownload} alt="" /> */}
+                <PlotlyWidget
+                  url1={`http://vpn.v0d14ka.ru:8005/${selectedFile?.frl}`}
+                  url2={`http://vpn.v0d14ka.ru:8005/${selectedFile?.frr}`}
+                  url3={`http://vpn.v0d14ka.ru:8005/${selectedFile?.ocr}`}
+                />
+                <a
+                  href={`http://vpn.v0d14ka.ru:8005/${selectedFile?.word}`}
+                  download={`Отчёт_по_${selectedFile?.name.slice(0, -4)}.docx`}
+                >
                   <button className="buttonDown">Скачать файл</button>
                 </a>
               </div>
@@ -113,8 +141,8 @@ const FileList: React.FC<FileListProps> = ({ files }) => {
               <div className="icons-wrap">
                 <img className="imgIconMore" src={logoDownloadWhite} alt="" />
                 <a
-                  href={`http://vpn.v0d14ka.ru:8005/${selectedFile?.word}`}
-                  download={`Отчёт_по_${selectedFile?.name}.docx`}
+                  href={`http://vpn.v0d14ka.ru:8005/${selectedFile?.file}`}
+                  download={`Отчёт_по_${selectedFile?.name.slice(0, -4)}.edf`}
                 >
                   <button className="buttonDownMore">Скачать файл</button>
                 </a>
