@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import json
 import plotly
 
-def plot_channel(data_with_classes: np.ndarray, channel_name: str, channel_index: int, resample_factor: int = 100) -> str:
+def plot_channel(data_with_classes: np.ndarray, channel_name: str, channel_index: int, resample_factor: int = 400) -> str:
     channel_data = data_with_classes[:, channel_index]
     classes = data_with_classes[:, -1]
     time_axis = np.arange(len(channel_data)) / 400  
@@ -51,7 +51,8 @@ def plot_channel(data_with_classes: np.ndarray, channel_name: str, channel_index
         2: False,
         3: False
     }
-
+    end_count = 0
+    start_count = 0
     for i in range(1, len(classes)):
         if classes[i] != classes[i-1]: 
             if classes[i-1] != 0:
@@ -66,6 +67,7 @@ def plot_channel(data_with_classes: np.ndarray, channel_name: str, channel_index
                     name=class_labels[classes[i-1] ]
                 )
                 )
+                end_count += 1
 
             if classes[i] != 0:
                 class_exists[classes[i]] = True
@@ -78,9 +80,10 @@ def plot_channel(data_with_classes: np.ndarray, channel_name: str, channel_index
                     name=class_labels[classes[i]],
                     legendgroup=class_labels[classes[i]]
                 ))
-                
+                start_count += 1
 
-
+    print("START COUNT", start_count)
+    print("END COUNT", end_count)
     for class_type in class_labels:
         if class_exists[class_type]:
             fig.add_trace(go.Scatter(

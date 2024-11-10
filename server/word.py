@@ -12,6 +12,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.enum.table import WD_ALIGN_VERTICAL
 
 def save_analytics_to_word(analytics: Analytics, output_file: str) -> None:
+    print("[DEBUG] Saving analytics to word")
     doc = Document()
     
     # Заголовок отчета
@@ -26,6 +27,8 @@ def save_analytics_to_word(analytics: Analytics, output_file: str) -> None:
     doc.add_paragraph(f'Средний интервал между аномалиями (сек): {analytics.average_interval:.2f}')
     
     # Заголовок таблицы
+    # Аномалии в таблице указаны только если их длительность больше 5 секунд
+    #doc.add_paragraph('В таблице указаны только аномалии, длительность которых больше 5 секунд')
     doc.add_heading('Детали аномалий', level=2)
     
     # Создаем таблицу
@@ -53,6 +56,9 @@ def save_analytics_to_word(analytics: Analytics, output_file: str) -> None:
     sorted_anomalies.sort(key=lambda x: x[1]) 
     
     for i, (anomaly_name, start, end, peak_amplitude) in enumerate(sorted_anomalies):
+        # если меньше 5 секунд то не добавляем
+        #if end - start < 5:
+        #    continue
         row_cells = table.add_row().cells
         row_cells[0].text = anomaly_name
         row_cells[1].text = f'{start:.2f}'
@@ -68,5 +74,5 @@ def save_analytics_to_word(analytics: Analytics, output_file: str) -> None:
         shading_color = "D3D3D3" if i % 2 == 0 else "FFFFFF"
         for cell in row_cells:
             cell._element.get_or_add_tcPr().append(parse_xml(r'<w:shd {} w:fill="{}"/>'.format(nsdecls('w'), shading_color)))
-
     doc.save(output_file)
+    print ("[DEBUG] Word file saved to", output_file)
