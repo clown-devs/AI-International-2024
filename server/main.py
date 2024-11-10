@@ -29,15 +29,19 @@ async def create_upload_file(file: UploadFile):
 
     marked_edf_filename, data = get_marked_edf(tmp_filename, hash)
 
+    print("[DEBUG] Marked edf filename:", marked_edf_filename)
 
+    print("[DEBUG] plotting FrL")
     frl_json = plot_channel(data, "FrL", 0)
     with open(f"server/static/{hash}_frl.json", "w") as f:
         f.write(frl_json)
 
+    print("[DEBUG] plotting FrR")
     frr_json = plot_channel(data, "FrR", 1)
     with open(f"server/static/{hash}_frr.json", "w") as f:
         f.write(frr_json)
     
+    print("[DEBUG] plotting OcR")
     ocr_json = plot_channel(data, "OcR", 2)
     with open(f"server/static/{hash}_ocr.json", "w") as f:
         f.write(ocr_json)
