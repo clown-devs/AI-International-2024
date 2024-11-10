@@ -17,7 +17,6 @@ interface LoadingDataProps {
 const LoadingData: React.FC<LoadingDataProps> = ({ files }) => {
   const [fileNames, setFileNames] = useState<string[]>([])
   const [isDragging, setIsDragging] = useState<boolean>(false)
-  console.log(files)
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const files = event.target.files

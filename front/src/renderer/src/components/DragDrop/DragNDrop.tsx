@@ -3,7 +3,7 @@ import './DragNDrop.css'
 import logo from '../../assets/upload.svg'
 
 interface DragNDropProps {
-  onFilesSelected: (files: File[]) => void // Принимаем массив файлов
+  onFilesSelected: (files: File[]) => void
 }
 
 const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
@@ -69,14 +69,18 @@ const DragNDrop: React.FC<DragNDropProps> = ({ onFilesSelected }) => {
 
       {fileNames.length > 0 && (
         <div className="file-preview">
-          {fileNames.map((name, index) => (
-            <div key={index} className="file-item">
-              {name}
-              <button className="remove-file-button" onClick={() => removeFile(index)}>
-                &times;
-              </button>
-            </div>
-          ))}
+          {fileNames.map((name, index) => {
+            const shortenedName = name.length > 11 ? name.substring(0, 11) + '...' : name
+
+            return (
+              <div key={index} className="file-item">
+                {shortenedName}
+                <button className="remove-file-button" onClick={() => removeFile(index)}>
+                  &times;
+                </button>
+              </div>
+            )
+          })}
         </div>
       )}
     </div>
