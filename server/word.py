@@ -28,7 +28,7 @@ def save_analytics_to_word(analytics: Analytics, output_file: str) -> None:
     
     # Заголовок таблицы
     # Аномалии в таблице указаны только если их длительность больше 5 секунд
-    doc.add_paragraph('В таблице указаны только аномалии, длительность которых больше 5 секунд')
+    #doc.add_paragraph('В таблице указаны только аномалии, длительность которых больше 5 секунд')
     doc.add_heading('Детали аномалий', level=2)
     
     # Создаем таблицу
@@ -57,8 +57,8 @@ def save_analytics_to_word(analytics: Analytics, output_file: str) -> None:
     
     for i, (anomaly_name, start, end, peak_amplitude) in enumerate(sorted_anomalies):
         # если меньше 5 секунд то не добавляем
-        if end - start < 5:
-            continue
+        #if end - start < 5:
+        #    continue
         row_cells = table.add_row().cells
         row_cells[0].text = anomaly_name
         row_cells[1].text = f'{start:.2f}'
