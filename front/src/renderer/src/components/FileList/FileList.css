@@ -1,0 +1,172 @@
+.fileListWrap {
+  width: 1000px;
+  height: 650px;
+  border: 2px solid #526aff;
+  border-radius: 20px;
+  padding-right: 10px;
+  overflow-y: auto;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.file-item-li {
+  display: flex;
+  background: none;
+  border-bottom: 1px solid white;
+}
+
+.leftPart {
+  width: 526px;
+  border-right: 1px solid white;
+  position: relative;
+}
+
+.imgFile {
+  width: 525px;
+  height: 200px;
+  position: relative;
+}
+
+.imgFileMore {
+  width: 1000px;
+  height: 550px;
+}
+
+.buttonOpen {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  border: none;
+  cursor: pointer;
+  height: 50px;
+  background: #526aff80;
+  color: white;
+  padding: 15px 25px;
+}
+
+.rightPart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
+
+.filesDownload {
+  display: flex;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.subFiles {
+  border: 1px solid #526aff;
+  width: 200px;
+  padding: 10px 20px;
+  text-align: center;
+  border-radius: 26px;
+}
+
+.buttonsFiles {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.buttonDown,
+.buttonCopy {
+  background: none;
+  border: none;
+  color: #526aff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imgIcon {
+  width: 25px;
+  height: 25px;
+}
+
+.fileListWrap::-webkit-scrollbar {
+  width: 8px;
+}
+
+.fileListWrap::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  color: #acb8ff;
+  border: 4px solid #acb8ff;
+}
+
+.fileListWrap::-webkit-scrollbar-track {
+  border-radius: 100px;
+}
+
+.fileListWrap::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.buttonBack {
+  width: 200px;
+  height: 50px;
+  background: #526aff;
+  border-radius: 28px;
+  color: white;
+  cursor: pointer;
+}
+
+.bottomPart {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttomWrapper {
+  display: flex;
+  gap: 10px;
+  background: #526aff;
+  border-radius: 26px;
+  padding: 5px 25px;
+}
+
+.icons-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonDownMore,
+.buttonCopyMore {
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.imgIconMore {
+  color: white;
+}
+
+.topPartWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.topPart {
+  display: flex;
+  border-radius: 26px;
+  border: 1px solid #526aff;
+  padding: 10px 25px;
+  gap: 25px;
+}

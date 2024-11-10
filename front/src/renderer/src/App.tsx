@@ -1,31 +1,35 @@
 import axios from 'axios'
 import DragNDrop from './components/DragDrop/DragNDrop'
+import FileList from './components/FileList/FileList'
 import { useState } from 'react'
-import Plot from 'react-plotly.js'
 import LoadingData from './components/LoadingData/LoadingData'
 
 interface FileWithProgress {
   file: File
   progress: number
   name: string
+  word: string
+  frl: string
+  frr: string
+  ocr: string
 }
 
 function App(): JSX.Element {
   const [files, setFiles] = useState<FileWithProgress[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const [showList, setShowList] = useState<boolean>(true)
+  const [showData, setShowData] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
-  const [data, setData] = useState<{
-    FrL: number[]
-    FrR: number[]
-    OcR: number[]
-    classes: number[]
-  } | null>(null)
 
   const handleFileSelected = (files: File[]): void => {
     const newFiles = files.map((file) => ({
       file,
       progress: 0,
-      name: file.name
+      name: file.name,
+      word: '',
+      frl: '',
+      frr: '',
+      ocr: ''
     }))
 
     setFiles((prevFiles) => [...prevFiles, ...newFiles]) // Добавляем новые файлы в состояние
@@ -36,7 +40,6 @@ function App(): JSX.Element {
       console.log('Нет выбранных файлов для загрузки')
       return
     }
-    console.log('qwqqwqww', files)
 
     setLoading(true)
     setError(null)
@@ -61,36 +64,37 @@ function App(): JSX.Element {
       }
     })
     await Promise.all(uploadPromises)
+    setShowData(true)
+  }
+
+  const showFileList = (): void => {
+    setShowList(false)
   }
 
   if (error) return <p>{error}</p>
 
   return (
     <>
-      {loading && <LoadingData files={files} />}
+      {loading && showList && <LoadingData files={files} />}
 
-      {!loading && <DragNDrop onFilesSelected={handleFileSelected} />}
+      {!loading && showList && <DragNDrop onFilesSelected={handleFileSelected} />}
 
-      <div className="tabButton">
-        <button className="activeButton cancel">Отменить</button>
-        <button className="activeButton" onClick={uploadFiles}>
-          Загрузить
-        </button>
-      </div>
-      {/* {data && (
-        <Plot
-          data={[
-            {
-              x: [data.FrL],
-              y: data.FrR,
-              type: 'scatter', // Измените на нужный тип графика, например 'bar' для гистограммы
-              mode: 'lines+markers',
-              marker: { color: 'blue' }
-            }
-          ]}
-          layout={{ title: 'Ваш график', xaxis: { title: 'X' }, yaxis: { title: 'Y' } }}
-        />
-      )} */}
+      {!showList && <FileList files={files} />}
+
+      {showList && (
+        <div className="tabButton">
+          <button className="activeButton cancel">Отменить</button>
+          {loading ? (
+            <button className={`activeButton ${!showData ? 'loading' : ''}`} onClick={showFileList}>
+              {!showData ? 'Загрузка данных' : 'Показать данные'}
+            </button>
+          ) : (
+            <button className="activeButton" onClick={uploadFiles}>
+              Загрузить
+            </button>
+          )}
+        </div>
+      )}
     </>
   )
 }
