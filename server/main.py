@@ -3,6 +3,7 @@ import hashlib
 from .ai import get_marked_edf
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+import random
 
 app = FastAPI()
 
@@ -20,12 +21,14 @@ app.mount("/static", StaticFiles(directory="./server/static"), name="static")
 @app.post("/upload")
 async def create_upload_file(file: UploadFile):
     edfInput = file.file
-    hash = hashlib.md5(file.filename.encode()).hexdigest()
+
+
+    hash = hashlib.md5(file.filename.encode()+ str(random.randint(0, 100000)).encode()).hexdigest()
     tmp_filename = f"server/static/{hash}.edf"
     with open(tmp_filename, "wb") as f:
         f.write(edfInput.read())
-
-    marked_edf_filename, data = get_marked_edf(tmp_filename)
+    print("HASH:", hash)
+    marked_edf_filename, data = get_marked_edf(tmp_filename, hash)
 
     # т.к json очень большой то лучше отдавать его в виде ссылки на файл
     json_filename = f"static/{hash}.json"
@@ -64,14 +67,15 @@ async def create_upload_file(file: UploadFile):
     #     f.write(json.dumps(data))
 
 
-    graph_json = create_plot(data)
-      # Сжимаем график в gzip
-    with open("server/" + json_filename, "w") as f:
-        f.write(graph_json)
+    #graph_json = create_plot(data)
+
+    #with open("server/" + json_filename, "w") as f:
+    #    f.write(graph_json)
     
     resp = {
         "file": marked_edf_filename,
-        "graph": json_filename
+        "word": f"static/{hash}.docx",
+        #"graph": json_filename
         #"json": json_filename,
         #"msgpack": pack_filename + ".gz"
     }
